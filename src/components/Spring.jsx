@@ -7,50 +7,27 @@ const Spring = (props) => {
   const [photos, setPhotos] = useState([])
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
+  let pageSize = 10
   const getPhotos = async () => {
     setLoading(true)
     const res = await fetch(
-      `https://api.unsplash.com/collections/1298463/photos?page=${page}&client_id=xe9XHOwZZpeZ4zGNMg1Clm03MIaZ1s2x2Zpi1wLDD5c`,
+      `https://api.unsplash.com/collections/1298463/photos?page=${page}&per_page=${pageSize}&client_id=xe9XHOwZZpeZ4zGNMg1Clm03MIaZ1s2x2Zpi1wLDD5c`,
     )
     const data = await res.json()
     console.log(data)
     setPhotos(data)
     setLoading(false)
   }
-  const getPreviousPhotos = async () => {
-    setLoading(true)
-    const res = await fetch(
-      `https://api.unsplash.com/collections/1298463/photos?page=${
-        page - 1
-      }&client_id=xe9XHOwZZpeZ4zGNMg1Clm03MIaZ1s2x2Zpi1wLDD5c`,
-    )
-    const data = await res.json()
-    setPhotos(data)
-    setPage(page - 1)
-    // console.log(page)
-    setLoading(false)
-  }
-  const getNextPhotos = async () => {
-    setLoading(true)
-    const res = await fetch(
-      `https://api.unsplash.com/collections/1298463/photos?page=${
-        page + 1
-      }&client_id=xe9XHOwZZpeZ4zGNMg1Clm03MIaZ1s2x2Zpi1wLDD5c`,
-    )
-    const data = await res.json()
-    setPhotos(data)
-    setPage(page + 1)
-    console.log(page)
-    setLoading(false)
-  }
   useEffect(() => {
     getPhotos()
-  }, [])
+  }, [page])
   return (
     <>
       <div className="bg-slate-200 -z-10 p-3">
         {loading === true ? (
-          'Loading...'
+          <div className="flex items-center justify-center text-4xl h-screen">
+            Loading...
+          </div>
         ) : (
           <Masonry gutter="15px" columnsCount={props.column}>
             {photos.map((curElem, i) => {
@@ -107,20 +84,20 @@ const Spring = (props) => {
                 ? 'my-4 p-4 rounded-md bg-gray-300 shadow-lg shadow-gray-700  font-extrabold line-through'
                 : 'my-4 p-4 rounded-md bg-[#86aeff] shadow-lg shadow-gray-700  font-extrabold scroll-smooth'
             }`}
-            onClick={() => getPreviousPhotos()}
+            onClick={() => setPage(page - 1)}
           >
             Previous
           </button>
           <p className="text-xl">{page}</p>
 
           <button
-            disabled={photos.length < 10}
+            disabled={photos.length < pageSize}
             className={`${
-              photos.length < 10
+              photos.length < pageSize
                 ? 'my-4 p-4 rounded-md bg-gray-300 shadow-lg shadow-gray-700 font-extrabold line-through'
                 : 'my-4 p-4 rounded-md bg-[#86aeff] shadow-lg shadow-gray-700  font-extrabold scroll-smooth'
             }`}
-            onClick={() => getNextPhotos()}
+            onClick={() => setPage(page + 1)}
           >
             Next
           </button>
