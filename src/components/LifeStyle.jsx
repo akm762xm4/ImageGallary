@@ -31,12 +31,12 @@ const LifeStyle = (props) => {
           </div>
         ) : (
           <Masonry gutter="15px" columnsCount={props.column}>
-            {photos.map((curElem, i) => {
+            {photos.map((curElem) => {
               return (
                 <>
                   <div
                     className="flex flex-col bg-[#94a3b863] p-2 rounded-md gap-2 shadow-gray-700 shadow-md"
-                    key={i}
+                    key={curElem.id}
                   >
                     <span>
                       <img
