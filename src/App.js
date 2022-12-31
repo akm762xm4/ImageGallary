@@ -8,7 +8,7 @@ import LifeStyle from './components/LifeStyle'
 import Interior from './components/Interior'
 import GoToTop from './components/GotoTop'
 import Vehicles from './components/Vehicles'
-//
+// React Router
 import { Link, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import { useState } from 'react'
 // Images
