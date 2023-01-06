@@ -3,25 +3,18 @@ import { useState, useEffect } from 'react'
 import like from '../Images/like.png'
 import instagram from '../Images/instagram2.png'
 import Masonry from 'react-responsive-masonry'
-const Luxury = (props) => {
+import { FetchFromAPI } from './FetchFromAPI'
+const Luxury = ({ column }) => {
   const [photos, setPhotos] = useState([])
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
   let pageSize = 10
-  const getPhotos = async () => {
-    setLoading(true)
-    const res = await fetch(
-      `https://api.unsplash.com/collections/5Ak7qclzOBg/photos?page=${page}&per_page=${pageSize}&client_id=xe9XHOwZZpeZ4zGNMg1Clm03MIaZ1s2x2Zpi1wLDD5c`,
-    )
-    const data = await res.json()
-    setPhotos(data)
-    console.log(data)
-    setLoading(false)
-  }
-
+  const [url, setUrl] = useState(
+    `collections/5Ak7qclzOBg/photos?page=${page}&per_page=${pageSize}`,
+  )
   useEffect(() => {
-    getPhotos()
-  }, [page])
+    FetchFromAPI(url).then((data) => setPhotos(data))
+  }, [url])
   return (
     <>
       <div className="bg-slate-200 -z-10 p-3">
@@ -30,7 +23,7 @@ const Luxury = (props) => {
             Loading...
           </div>
         ) : (
-          <Masonry gutter="10px" columnsCount={props.column}>
+          <Masonry gutter="10px" columnsCount={column}>
             {photos.map((curElem) => {
               return (
                 <>
@@ -85,7 +78,14 @@ const Luxury = (props) => {
                 ? 'my-4 p-4 rounded-md bg-gray-300 shadow-lg shadow-gray-700 font-extrabold line-through'
                 : 'my-4 p-4 rounded-md bg-[#86aeff] shadow-lg shadow-gray-700 font-extrabold scroll-smooth'
             }`}
-            onClick={() => setPage(page - 1)}
+            onClick={() => {
+              setUrl(
+                `collections/5Ak7qclzOBg/photos?page=${
+                  page - 1
+                }&per_page=${pageSize}`,
+              )
+              setPage(page - 1)
+            }}
           >
             Previous
           </button>
@@ -97,7 +97,14 @@ const Luxury = (props) => {
                 ? 'my-4 p-4 rounded-md bg-gray-300 shadow-lg shadow-gray-700 font-extrabold line-through'
                 : 'my-4 p-4 rounded-md bg-[#86aeff] shadow-lg shadow-gray-700 font-extrabold scroll-smooth'
             }`}
-            onClick={() => setPage(page + 1)}
+            onClick={() => {
+              setUrl(
+                `collections/5Ak7qclzOBg/photos?page=${
+                  page + 1
+                }&per_page=${pageSize}`,
+              )
+              setPage(page + 1)
+            }}
           >
             Next
           </button>

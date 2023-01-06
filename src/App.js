@@ -113,9 +113,7 @@ const App = () => {
             </button>
           </span>
         </ul>
-        {/* For Gradient */}
         <div className="bg-gradient-to-b h-8 from-[#b6c0cf] to-slate-200"></div>
-        {/* For Gradient */}
         <Routes>
           <Route path="/" element={<Home column={cols} />}></Route>
           <Route path="/luxury" element={<Luxury column={cols} />}></Route>
